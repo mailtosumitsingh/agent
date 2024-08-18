@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
@@ -63,6 +64,11 @@ public class Robot {
     public String toText(int x, int y, int w, int h) {
         Region r = new Region(x, y, w, h);
 		return r.text();
+    }
+
+    public BufferedImage getBufferedImage(int x, int y, int w, int h) {
+        Region r = new Region(x, y, w, h);
+        return r.getImage().get();
     }
 
     public List<Match> findAllText(Image img, String txt) {

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class BaseAutomationEvent implements IAutomationEvent {
+public class BaseAutomationEvent {
 	String id = UUID.randomUUID().toString();
 	Map<String, Object> data = new HashMap<>();
 	String msg;
@@ -33,6 +33,9 @@ public class BaseAutomationEvent implements IAutomationEvent {
 	public BaseAutomationEvent(String msg) {
 		super();
 		this.msg = msg;
+	}
+	public BaseAutomationEvent(){
+
 	}
 	
 	

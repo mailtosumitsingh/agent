@@ -52,12 +52,12 @@
 			<artifactId>guava</artifactId>
 			<version>30.1.1-jre</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.zeromq/jeromq -->
 		<dependency>
-			<groupId>org.zeromq</groupId>
-			<artifactId>jeromq</artifactId>
-			<version>0.5.3</version>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>5.12.0</version>
 		</dependency>
+
 
 	</dependencies>
 
