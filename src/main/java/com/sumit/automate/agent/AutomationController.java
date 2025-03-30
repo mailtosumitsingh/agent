@@ -25,6 +25,9 @@ public class AutomationController {
     @Autowired
     Robot robot;
 
+    @Autowired
+    SoundRecorder recorder;
+
     @PostMapping("/test")
     public Point test( @RequestBody BaseAutomationEvent event) {
         com.sumit.automate.agent.Point p  = null;
@@ -201,5 +204,13 @@ public class AutomationController {
         p.setY(location[1]);
         p.getData().put("reply",System.currentTimeMillis());
         return p;
+    }
+    @GetMapping("/recordStart")
+    public void startRecording(){
+            recorder.start();
+    }
+    @GetMapping("/recordStop")
+    public String stopRecording(){
+       return recorder.stop();
     }
 }

@@ -1,5 +1,6 @@
 package com.sumit.automate.agent;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,11 @@ import java.net.URL;
 import javax.swing.*;
 @SpringBootApplication
 public class AgentApplication {
+	@Autowired
+	SoundRecorder recorder ;
+
+	@Autowired
+	AudioInferenceService audioInferenceService;
 
 	public static void main(String[] args) {
 		System.setProperty("java.awt.headless", "false");
@@ -48,7 +54,7 @@ public class AgentApplication {
 			});
 		};
 	}
-	private static void createAndShowGUI() throws Exception{
+	private  void createAndShowGUI() throws Exception{
 		//Check the SystemTray support
 		if (!SystemTray.isSupported()) {
 			System.out.println("SystemTray is not supported");
@@ -68,6 +74,10 @@ public class AgentApplication {
 		MenuItem warningItem = new MenuItem("Warning");
 		MenuItem infoItem = new MenuItem("Info");
 		MenuItem noneItem = new MenuItem("None");
+		MenuItem record = new MenuItem("Record");
+		MenuItem stopItem = new MenuItem("Stop");
+
+		MenuItem runItem = new MenuItem("run");
 		MenuItem exitItem = new MenuItem("Exit");
 
 		//Add components to popup menu
@@ -82,7 +92,9 @@ public class AgentApplication {
 		displayMenu.add(infoItem);
 		displayMenu.add(noneItem);
 		popup.add(exitItem);
-
+		popup.add(record);
+		popup.add(stopItem);
+		popup.add(runItem);
 		trayIcon.setPopupMenu(popup);
 
 		try {
@@ -167,9 +179,37 @@ public class AgentApplication {
 				System.exit(0);
 			}
 		});
+		record.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			recorder.start();
+			}
+		});
+		stopItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String file = recorder.stop();
+			}
+		});
+		runItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String file = recorder.stop();
+                try {
+					long time = System.currentTimeMillis();
+                    String text = audioInferenceService.sendAudioFile(file);
+					System.out.println("TExt: "+text);
+					long time2 = System.currentTimeMillis();
+					System.out.println(time2-time);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+		});
 	}
+
 	//Obtain the image URL
-	protected static Image createImage(String path, String description) throws Exception{
+	protected  Image createImage(String path, String description) throws Exception{
 
 		URL imageURL =  new ClassPathResource(path).getURL();
 		if (path == null) {
